@@ -30,17 +30,17 @@ namespace ServiceProvider_WebAPI.Controllers
         [Route("add/{token}/{firstNumber}/{secondNumber}")]
         [Route("add")]
         [HttpGet]
-        public int Add(int token, int firstNumber, int secondNumber)
+        public IHttpActionResult Add(int token, int firstNumber, int secondNumber)
         {
-           /* if(foob.validate(token) == "validated")
-            {*/
-                return firstNumber + secondNumber;
-            /*}*/
-            /*else
+            if (foob.validate(token) == "validated")
+            {
+                return Ok(firstNumber + secondNumber);
+            }
+            else
             {
                 var result = new { Status = "Denied", Reason = "Authentication Error" };
                 return Ok(result);
-            }*/
+            }
         }
 
         [Route("add/{token}/{firstNumber}/{secondNumber}/{thirdNumber}")]

@@ -26,48 +26,33 @@ namespace Registry_WebAPI.Controllers
             foobFactory = new ChannelFactory<AuthInterface>(tcp, URL);
             foob = foobFactory.CreateChannel();
         }
-        // GET: api/Registry
-        public IHttpActionResult Get(int token)
-        {
-            string path = @"C:\authentication\registries.json";
-            StreamReader file = new StreamReader(path);
-            var jsonIn = file.ReadToEnd();
-            List<Registry> regs = JsonConvert.DeserializeObject<List<Registry>>(jsonIn);
-            file.Close();
-            return Ok(regs);
-        }
-
-
-        [Route("search/{name}")]
+        [Route("AllServices/{token}")]
         [HttpGet]
-        public IHttpActionResult Search(string name)
+        public IHttpActionResult AllServices(int token)
         {
-            string path = @"C:\authentication\registries.json";
-            StreamReader file = new StreamReader(path);
-            string jsonIn = file.ReadToEnd();
-            file.Close();
-
-            List<Registry> regs = JsonConvert.DeserializeObject<List<Registry>>(jsonIn);
-            List<Registry> srchedReg = new List<Registry>();
-
-            foreach (Registry reg in regs)
+            if (foob.validate(token) == "validated")
             {
-                if ((reg.Name.ToLower()).Contains(name.ToLower()))
-                {
-                    srchedReg.Add(reg);
-
-                }
+                string path = @"C:\authentication\registries.json";
+                StreamReader file = new StreamReader(path);
+                var jsonIn = file.ReadToEnd();
+                List<Registry> regs = JsonConvert.DeserializeObject<List<Registry>>(jsonIn);
+                file.Close();
+                return Ok(regs);
             }
-
-            return Ok(srchedReg);
+            else
+            {
+                var result = new { Status = "Denied", Reason = "Authentication Error" };
+                return Ok(result);
+            }
+            
         }
 
-        // POST: api/Registry
-        public string Post([FromBody] Registry data)
+
+        [Route("search/{token}/{name}")]
+        [HttpGet]
+        public IHttpActionResult Search(int token, string name)
         {
-
-
-            lock (this)
+            if (foob.validate(token) == "validated")
             {
                 string path = @"C:\authentication\registries.json";
                 StreamReader file = new StreamReader(path);
@@ -75,23 +60,65 @@ namespace Registry_WebAPI.Controllers
                 file.Close();
 
                 List<Registry> regs = JsonConvert.DeserializeObject<List<Registry>>(jsonIn);
+                List<Registry> srchedReg = new List<Registry>();
 
                 foreach (Registry reg in regs)
                 {
-                    if (reg.Name == data.Name)
+                    if ((reg.Name.ToLower()).Contains(name.ToLower()))
                     {
-                        return "Service is already available in the list";
+                        srchedReg.Add(reg);
                     }
-
                 }
 
-                regs.Add(data);
+                return Ok(srchedReg);
+            }
+            else
+            {
+                var result = new { Status = "Denied", Reason = "Authentication Error" };
+                return Ok(result);
+            }
+        }
 
-                string jsonOut = JsonConvert.SerializeObject(regs, Formatting.Indented);
+        // POST: api/Registry
+        [Route("{token}")]
+        [HttpPost]
+        public IHttpActionResult Post(int token, [FromBody] Registry data)
+        {
 
-                File.WriteAllText(path, jsonOut.ToString());
+            if (foob.validate(token) == "validated")
+            {
 
-                return "success";
+                lock (this)
+                {
+                    string path = @"C:\authentication\registries.json";
+                    StreamReader file = new StreamReader(path);
+                    string jsonIn = file.ReadToEnd();
+                    file.Close();
+
+                    List<Registry> regs = JsonConvert.DeserializeObject<List<Registry>>(jsonIn);
+
+                    foreach (Registry reg in regs)
+                    {
+                        if (reg.Name == data.Name)
+                        {
+                            return Ok("Service is already available in the list");
+                        }
+
+                    }
+
+                    regs.Add(data);
+
+                    string jsonOut = JsonConvert.SerializeObject(regs, Formatting.Indented);
+
+                    File.WriteAllText(path, jsonOut.ToString());
+
+                    return Ok("success");
+                }
+            }
+            else
+            {
+                var result = new { Status = "Denied", Reason = "Authentication Error" };
+                return Ok(result);
             }
         }
 
@@ -100,31 +127,48 @@ namespace Registry_WebAPI.Controllers
          {
          }*/
 
-        [Route("Unpublish/{apiendpoint}")]
+        [Route("Unpublish/{token}/{apiendpoint}")]
         [HttpDelete]
-        public IHttpActionResult Unpublish(String apiendpoint)
+        public IHttpActionResult Unpublish(int token, String apiendpoint)
         {
-            string path = @"C:\authentication\registries.json";
-            StreamReader file = new StreamReader(path);
-            string jsonIn = file.ReadToEnd();
-            file.Close();
 
-            List<Registry> regs = JsonConvert.DeserializeObject<List<Registry>>(jsonIn);
-            List<Registry> srchedReg = new List<Registry>();
-
-            foreach (Registry reg in regs)
+            if (foob.validate(token) == "validated")
             {
-                if (!(reg.APIendpoint.ToLower()).Contains(apiendpoint.ToLower()))
+                string path = @"C:\authentication\registries.json";
+                StreamReader file = new StreamReader(path);
+                string jsonIn = file.ReadToEnd();
+                file.Close();
+                int count = 0;
+                List<Registry> regs = JsonConvert.DeserializeObject<List<Registry>>(jsonIn);
+                List<Registry> srchedReg = new List<Registry>();
+
+                foreach (Registry reg in regs)
                 {
-                    srchedReg.Add(reg);
+                    if (!(reg.APIendpoint.ToLower()).Contains(apiendpoint.ToLower()))
+                    {
+                        srchedReg.Add(reg);
+                    }
+                    else
+                    {
+                        count++;
+                    }
                 }
+                string jsonOut = JsonConvert.SerializeObject(srchedReg, Formatting.Indented);
+
+                File.WriteAllText(path, jsonOut.ToString());
+                if(count == 0)
+                {
+                    return Ok("Service is not Available in List");
+                }
+                return Ok("success");
+
             }
-            string jsonOut = JsonConvert.SerializeObject(srchedReg, Formatting.Indented);
-
-            File.WriteAllText(path, jsonOut.ToString());
-
-            return Ok("success");
-        }
+            else
+            {
+                var result = new { Status = "Denied", Reason = "Authentication Error" };
+                return Ok(result);
+            }
+}
 
     }
 }
