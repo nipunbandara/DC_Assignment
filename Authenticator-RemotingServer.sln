@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceProvider-WebAPI", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registry-WebAPI", "Registry-WebAPI\Registry-WebAPI.csproj", "{5709F85C-A65B-4F56-9221-CB53A22C7BD1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientGUI", "ClientGUI\ClientGUI.csproj", "{780F2A40-41B7-4E63-B00C-F8B3D2FEDF61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5709F85C-A65B-4F56-9221-CB53A22C7BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5709F85C-A65B-4F56-9221-CB53A22C7BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5709F85C-A65B-4F56-9221-CB53A22C7BD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{780F2A40-41B7-4E63-B00C-F8B3D2FEDF61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{780F2A40-41B7-4E63-B00C-F8B3D2FEDF61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{780F2A40-41B7-4E63-B00C-F8B3D2FEDF61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{780F2A40-41B7-4E63-B00C-F8B3D2FEDF61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
