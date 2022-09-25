@@ -29,8 +29,6 @@ namespace ClientGUI
         RestClient Regclient;
         RestClient SerProclient;
 
-        static HttpClient client = new HttpClient();
-
 
         public AllServices(int tok)
         {
@@ -45,7 +43,7 @@ namespace ClientGUI
             SerProclient = new RestClient(SerProURL);
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Startup(object sender, RoutedEventArgs e)
         {
             RestRequest request = new RestRequest("api/Registry/AllServices/" + token.ToString());
             RestResponse resp = Regclient.Get(request);
@@ -71,59 +69,60 @@ namespace ClientGUI
         }
 
 
-        private void serviceSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ServicesChanged(object sender, SelectionChangedEventArgs e)
         {
-            string serviceSelected = servicesListView.SelectedItem.ToString();
-            lServiceSelected.Content = serviceSelected;
-
-
-            RestRequest request = new RestRequest("api/Registry/search/" + token.ToString() + "/" + serviceSelected);
-            RestResponse resp = Regclient.Get(request);
-
-            List<Registry> regs = JsonConvert.DeserializeObject<List<Registry>>(resp.Content);
-            Registry reg = regs[0];
-
-            int numop = reg.numberOfOperands;
-
-            if(numop == 2)
+            if (servicesListView.SelectedItem != null)
             {
-                lNum1.Visibility = Visibility.Visible;
-                txtNum1.Visibility = Visibility.Visible;
+                string serviceSelected = servicesListView.SelectedItem.ToString();
+                lServiceSelected.Content = serviceSelected;
 
-                lNum2.Visibility = Visibility.Visible;
-                txtNum2.Visibility = Visibility.Visible;
+                RestRequest request = new RestRequest("api/Registry/search/" + token.ToString() + "/" + serviceSelected);
+                RestResponse resp = Regclient.Get(request);
 
-                lNum3.Visibility = Visibility.Hidden;
-                txtNum3.Visibility = Visibility.Hidden;
+                List<Registry> regs = JsonConvert.DeserializeObject<List<Registry>>(resp.Content);
+                Registry reg = regs[0];
 
-                txtNum1.Text = "";
-                txtNum2.Text = "";
-                txtNum3.Text = "";
+                int numop = reg.numberOfOperands;
 
-                lValue.Content = "";
+                if (numop == 2)
+                {
+                    lNum1.Visibility = Visibility.Visible;
+                    txtNum1.Visibility = Visibility.Visible;
+
+                    lNum2.Visibility = Visibility.Visible;
+                    txtNum2.Visibility = Visibility.Visible;
+
+                    lNum3.Visibility = Visibility.Hidden;
+                    txtNum3.Visibility = Visibility.Hidden;
+
+                    txtNum1.Text = "";
+                    txtNum2.Text = "";
+                    txtNum3.Text = "";
+
+                    lValue.Content = "";
+                }
+                else if (numop == 3)
+                {
+                    lNum1.Visibility = Visibility.Visible;
+                    txtNum1.Visibility = Visibility.Visible;
+
+                    lNum2.Visibility = Visibility.Visible;
+                    txtNum2.Visibility = Visibility.Visible;
+
+                    lNum3.Visibility = Visibility.Visible;
+                    txtNum3.Visibility = Visibility.Visible;
+
+                    txtNum1.Text = "";
+                    txtNum2.Text = "";
+                    txtNum3.Text = "";
+
+                    lValue.Content = "";
+                }
             }
-            else if(numop == 3)
-            {
-                lNum1.Visibility = Visibility.Visible;
-                txtNum1.Visibility = Visibility.Visible;
-
-                lNum2.Visibility = Visibility.Visible;
-                txtNum2.Visibility = Visibility.Visible;
-
-                lNum3.Visibility = Visibility.Visible;
-                txtNum3.Visibility = Visibility.Visible;
-
-                txtNum1.Text = "";
-                txtNum2.Text = "";
-                txtNum3.Text = "";
-
-                lValue.Content = "";
-            }
-
             
         }
 
-        private async void btnSearch_Click(object sender, RoutedEventArgs e)
+        private void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
             string sname = txtSearchService.Text;
 
@@ -141,7 +140,7 @@ namespace ClientGUI
         }
 
         // Submit button function
-        private void btnSubmit_Click(object sender, RoutedEventArgs e)
+        private void SubmitBtn_Click(object sender, RoutedEventArgs e)
         {
             string serviceSelected = lServiceSelected.Content.ToString();
             if (serviceSelected.ToLower().Contains("add"))
