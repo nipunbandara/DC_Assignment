@@ -7,14 +7,10 @@
         mc:Ignorable="d"
         Title="AllServices" Height="680" Width="1000" Loaded="Window_Startup">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="227*"/>
-            <ColumnDefinition Width="226*"/>
-            <ColumnDefinition Width="56*"/>
-        </Grid.ColumnDefinitions>
+
         <Button x:Name="btnSubmit" Content="Calculate" HorizontalAlignment="Left" Margin="354,568,0,0" VerticalAlignment="Top" Height="37" Width="94" Click="SubmitBtn_Click" FontSize="14"/>
-        <Label Content="Current Service" HorizontalAlignment="Left" Margin="135,362,0,0" VerticalAlignment="Top" FontSize="20" Background="White"  />
-        <Label Content="Search service:" Margin="135,61,157,0" VerticalAlignment="Top" FontSize="20" Background="White" RenderTransformOrigin="0.832,-0.253" Foreground="Black"/>
+        <Label Content="Current Service" HorizontalAlignment="Left" Margin="135,362,0,0" VerticalAlignment="Top" FontSize="20" Background="White" Height="37" Width="144"  />
+        <Label Content="Search service:" Margin="135,61,157,0" VerticalAlignment="Top" FontSize="20" Background="White" RenderTransformOrigin="0.832,-0.253" Foreground="Black" Height="37"/>
         <ListView x:Name="servicesListView" HorizontalAlignment="Left" Height="212" Margin="207,140,0,0" VerticalAlignment="Top" Width="620" SelectionChanged="ServicesChanged" Grid.ColumnSpan="2" Cursor="Hand">
             <ListView.View>
                 <GridView>
@@ -22,17 +18,17 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Content="Available Services" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Margin="19,140,0,0" Grid.Column="1"/>
-        <TextBox x:Name="txtSearchService" HorizontalAlignment="Left" Height="36" Margin="343,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310" FontSize="20" Background="White" Foreground="Black" Grid.ColumnSpan="2"/>
-        <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="268,61,0,0" VerticalAlignment="Top" Height="37" Width="94" Click="SearchBtn_Click" Grid.Column="1" FontSize="14"/>
+        <Label Content="Available Services" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Margin="453,140,0,0" Height="29" Width="128"/>
+        <TextBox x:Name="txtSearchService" HorizontalAlignment="Left" Height="36" Margin="343,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310" FontSize="20" Background="White" Foreground="Black"/>
+        <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="719,61,0,0" VerticalAlignment="Top" Height="37" Width="94" Click="SearchBtn_Click" FontSize="14"/>
         <TextBox x:Name="txtNum1" HorizontalAlignment="Left" Height="28" Margin="343,424,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="137"/>
         <Label x:Name="lServiceSelected" Content="" HorizontalAlignment="Left" Margin="354,364,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="350" Height="36" FontSize="16"/>
-        <Label x:Name="lNum1" Content="Number 1: " HorizontalAlignment="Left" Margin="254,426,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.948,0.383"/>
+        <Label x:Name="lNum1" Content="Number 1: " HorizontalAlignment="Left" Margin="254,426,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.948,0.383" Height="26" Width="69"/>
         <TextBox x:Name="txtNum2" HorizontalAlignment="Left" Height="28" Margin="343,468,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="137"/>
-        <Label x:Name="lNum2" Content="Number 2: " HorizontalAlignment="Left" Margin="254,470,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.948,0.383"/>
+        <Label x:Name="lNum2" Content="Number 2: " HorizontalAlignment="Left" Margin="254,470,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.948,0.383" Height="26" Width="69"/>
         <TextBox x:Name="txtNum3" HorizontalAlignment="Left" Height="28" Margin="343,516,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="137"/>
-        <Label x:Name="lNum3" Content="Number 3: " HorizontalAlignment="Left" Margin="254,518,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.948,0.383"/>
-        <Label Content="Calculated Value" HorizontalAlignment="Left" Margin="144,483,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.948,0.383" Grid.Column="1"/>
-        <Label x:Name="lValue" Content="" HorizontalAlignment="Left" Margin="268,478,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.948,0.383" Grid.Column="1" Width="210" Height="35" FontSize="14" FontWeight="Bold"/>
+        <Label x:Name="lNum3" Content="Number 3: " HorizontalAlignment="Left" Margin="254,518,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.948,0.383" Height="26" Width="69"/>
+        <Label Content="Calculated Value" HorizontalAlignment="Left" Margin="622,478,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.948,0.383" Height="26" Width="97"/>
+        <Label x:Name="lValue" Content="" HorizontalAlignment="Left" Margin="738,474,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.948,0.383" Width="210" Height="34" FontSize="14" FontWeight="Bold"/>
     </Grid>
 </Window>
