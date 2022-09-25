@@ -30,9 +30,10 @@ namespace ServicePublishingConsoleApp
 
             //RestResponse  = client.Get(request);
 
+            string un, pwd, endp = "";
 
-            Console.WriteLine("Register - R, Login - L, Exit - E");
-
+            Console.WriteLine("Register - R, Login - L, Publish - P, UnPublish - U, Exit - E");
+            Console.Write("Enter Operation ID: ");
             string action = Console.ReadLine();
 
             int tok = 0;
@@ -41,47 +42,89 @@ namespace ServicePublishingConsoleApp
             {
                 if (action == "R")
                 {
-                    Console.WriteLine(foob.Register("test", "psw123"));
+                    Console.Write("Enter User name : ");
+                    un = Console.ReadLine();
+                    Console.Write("Enter Password : ");
+                    pwd = Console.ReadLine();
+                    Console.WriteLine(foob.Register(un, pwd));
                 }
                 if(action == "L")
                 {
-                    tok = foob.Login("test", "psw123");
-                    Console.WriteLine(tok);
+                    Console.Write("Enter User name : ");
+                    un = Console.ReadLine();
+                    Console.Write("Enter Password : ");
+                    pwd = Console.ReadLine();
+                    tok = foob.Login(un, pwd);
+                    if(tok != 0)
+                    {
+                        Console.WriteLine("Successfully Logged In");
+                    }
+                    //Console.WriteLine(tok);
                 }
-                if(action == "V")
+                else if(action == "V")
                 {
                     Console.WriteLine(foob.validate(tok));
                 }
-                if(action == "P")
+                else if(action == "P")
                 {
-                    tok = foob.Login("test", "psw123");
+                    if(tok != 0)
+                    {
+                        Registry reg = new Registry();
 
-                    Registry reg = new Registry();
-                    reg.Name = "ADDThreeNumbers";
-                    reg.Description = "Adding three Numbers";
-                    reg.APIendpoint = "http://localhost:port/ADDThreeNumbers";
-                    reg.numberOfOperands = 3;
-                    reg.operandType = "integer";
+                        Console.Write("Enter Name : ");
+                        reg.Name = Console.ReadLine();
+                        Console.Write("Enter Description : ");
+                        reg.Description = Console.ReadLine();
+                        Console.Write("Enter APIendpoint : ");
+                        reg.APIendpoint = Console.ReadLine();
+                        Console.Write("Enter numberOfOperands : ");
+                        reg.numberOfOperands = Int32.Parse(Console.ReadLine());
+                        Console.Write("Enter operandType : ");
+                        reg.operandType = Console.ReadLine();
 
-                    RestRequest request = new RestRequest("api/Registry/" + tok.ToString());
-                    request.AddJsonBody(reg);
-                    RestResponse resp = client.Post(request);
-                    
-                    Console.WriteLine(resp.Content);
+                        /* reg.Name = "ADDThreeNumbers";
+                         reg.Description = "Adding three Numbers";
+                         reg.APIendpoint = "http://localhost:port/ADDThreeNumbers";
+                         reg.numberOfOperands = 3;
+                         reg.operandType = "integer";*/
+
+                        RestRequest request = new RestRequest("api/Registry/" + tok.ToString());
+                        request.AddJsonBody(reg);
+                        RestResponse resp = client.Post(request);
+
+                        Console.WriteLine(resp.Content);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please Login!");
+                    }
+
+
                 }
 
-                if(action == "U")
+                else if(action == "U")
                 {
-                    tok = foob.Login("test", "psw123");
-                    string apiendpoint = "ADDThreeNumbers";
+                    if(tok != 0)
+                    {
+                        Console.Write("Enter APIendpoint : ");
+                        endp = Console.ReadLine();
 
-                    RestRequest request = new RestRequest("api/Registry/Unpublish/" + tok.ToString() +"/"+ apiendpoint);
-                    RestResponse resp = client.Delete(request);
+                        //string apiendpoint = "ADDThreeNumbers";
 
-                    Console.WriteLine(resp.Content);
+                        RestRequest request = new RestRequest("api/Registry/Unpublish/" + tok.ToString() + "/" + endp);
+                        RestResponse resp = client.Delete(request);
+
+                        Console.WriteLine(resp.Content);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please Login!");
+                    }
+
                 }
-                Console.WriteLine("Register - R, Login - L, Exit - E");
-
+                
+                Console.WriteLine("Register - R, Login - L, Publish - P, UnPublish - U, Exit - E");
+                Console.Write("Enter Operation ID: ");
                 action = Console.ReadLine();
             }
 
