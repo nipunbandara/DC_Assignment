@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Authenticator_RemotingServer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,20 +21,38 @@ namespace ClientGUI
     /// </summary>
     public partial class Register : Window
     {
+        AuthInterface foob;
         public Register()
         {
             InitializeComponent();
+            ChannelFactory<AuthInterface> foobFactory;
+            NetTcpBinding tcp = new NetTcpBinding();
+            //Set the URL and create the connection!
+            string URL = "net.tcp://localhost:8100/AuthenticationService";
+            foobFactory = new ChannelFactory<AuthInterface>(tcp, URL);
+            foob = foobFactory.CreateChannel();
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
+            string un = UNameBox.Text;
+            string pwd = PasswordBox.Text;
+            string res = foob.Register(un, pwd);
+            MessageBox.Show(res);
+            if(res == "successfully registered")
+            {
+                MainWindow mw = new MainWindow();
+                mw.Show();
+                this.Hide();
+            }
 
         }
 
         private void LoginNowButton_Click(object sender, RoutedEventArgs e)
         {
-            Register register = new Register();
-            register.Show();
+            MainWindow mw  = new MainWindow();
+            mw.Show();
+            this.Hide();
         }
     }
 }
